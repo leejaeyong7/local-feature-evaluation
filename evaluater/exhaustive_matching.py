@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """ Python code for exhaustive matching. """
 
-import torch
 from os import path
+import torch
+from tqdm import tqdm
 from .fileio import *
 from .match_descriptors import match_descriptors
 
@@ -12,8 +13,8 @@ def exhaustive_matching(feature_paths,dataset_paths, match_max_dist_ratio, min_n
     match_path = dataset_paths['match']
     num_images = len(feature_paths['names'])
 
-    for idx1 in range(num_images - 1):
-        for idx2 in range(idx1 + 1, num_images):
+    for idx1 in tqdm(range(num_images - 1)):
+        for idx2 in tqdm(range(idx1 + 1, num_images), leave=False):
             desc1_path = descriptor_paths[idx1]
             desc2_path = descriptor_paths[idx2]
             desc1 = read_descriptors(desc1_path)

@@ -95,7 +95,7 @@ class SuperPoint(torch.nn.Module):
         '''
         with torch.no_grad():
             C, H, W = image.shape
-            gray_data = image.mean(0).view(1, 1, H, W).cpu()
+            gray_data = image.mean(0).view(1, 1, H, W)
             # resized = F.to_tensor(F.resize(F.to_pil_image(image), (240, 320)))
             # gray_data = resized.mean(0).view(1, 1, 240, 320).cpu()
             

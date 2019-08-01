@@ -37,12 +37,9 @@ def extract_features(extractor_type: str,
         keypoint_exists = path.exists(keypoint_path)
         descriptor_exists = path.exists(descriptor_path)
 
-        # if(keypoint_exists and descriptor_exists):
-        #     continue
-
         with Image.open(image_path) as img:
             torch_image = F.to_tensor(img)
-            keypoints, descriptors = extractor.extract(torch_image)
+            keypoints, descriptors = extractor.extract(torch_image.to(dev))
 
         write_keypoints(keypoint_path, keypoints.cpu())
         write_descriptors(descriptor_path, descriptors.cpu())
