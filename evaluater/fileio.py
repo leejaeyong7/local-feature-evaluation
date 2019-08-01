@@ -26,9 +26,9 @@ def write_keypoints(filepath, keypoints):
         keypoints(torch.Tensor): Nx2 tensor representing N x, y coordinates
     '''
     N, D = keypoints.shape
-    assert D == 2
+    assert (D == 2) or (D == 4)
     keypoints_arr = torch.zeros((N, 4))
-    keypoints_arr[:, :2] = keypoints
+    keypoints_arr[:, :D] = keypoints
 
     with open(filepath, 'rb') as f:
         np.array([N, D]).astype(np.int32).tofile(f, format=np.int32)
