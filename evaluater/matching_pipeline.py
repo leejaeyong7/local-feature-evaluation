@@ -14,22 +14,13 @@ from .extract_features import extract_features
 
 
 # global variables
-DATASET_NAMES = [
-    'Fountain', 'Herzjesu', 'South-Building',
-    'Madrid_Metropolis', 'Gendarmenmarkt', 'Tower_of_London',
-    'Oxford5k', 'Alamo', 'Roman_Forum', 'ArtsQuad_dataset'
-]
-DATASET_NAMES = [
-    'Fountain'
-]
-
 def mkdirp(p):
     if(not path.exists(p)):
         os.makedirs(p)
 
-def matching_pipeline(extractor_type, dataset_dir, colmap_dir):
+def matching_pipeline(extractor_type, dataset_dir, datset_names, colmap_dir):
     logging.info('= Performing matching evaluation pipeline for {}'.format(extractor_type))
-    for dataset_name in DATASET_NAMES:
+    for dataset_name in dataset_names:
         # Set the pipeline parameters.
         #       contain an "images" folder and a "database.db" file.
         logging.info('= Processing dataset {}'.format(dataset_name))
