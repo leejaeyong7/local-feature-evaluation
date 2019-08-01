@@ -18,7 +18,7 @@ def mkdirp(p):
     if(not path.exists(p)):
         os.makedirs(p)
 
-def matching_pipeline(extractor_type, dataset_dir, datset_names, colmap_dir):
+def matching_pipeline(extractor_type, dataset_dir, dataset_names, colmap_dir):
     logging.info('= Performing matching evaluation pipeline for {}'.format(extractor_type))
     for dataset_name in dataset_names:
         # Set the pipeline parameters.
