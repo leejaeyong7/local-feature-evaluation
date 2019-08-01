@@ -4,6 +4,7 @@
 from os import path
 from .match_descriptors import match_descriptors
 from .fileio import *
+import subprocess
 
 def approximate_matching(feature_paths,dataset_paths, match_max_dist_ratio, min_num_matches, colmap_path, vocab_tree_path):
     binary = path.join(colmap_path, 'src', 'tools', 'vocab_tree_retreiver_float')
@@ -20,10 +21,9 @@ def approximate_matching(feature_paths,dataset_paths, match_max_dist_ratio, min_
     ]
 
     # TODO: run vocabtree command
-
-    # retrieve results
-    status, output = subprocess.call(command)
-    assert(status == 0)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE)
+    output, status = process.communicate()
+    assert(status == '')
 
 
     # write results to file
