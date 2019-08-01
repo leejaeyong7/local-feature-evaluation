@@ -1,5 +1,11 @@
+import logging
 import argparse
+
 from evaluater.matching_pipeline import matching_pipeline
+
+logging.basicConfig(level='INFO',
+                    format='%(asctime)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -20,5 +26,6 @@ if __name__ == '__main__':
                         default='~/colmap/build', 
                         help='output for colmap build binary')
     args = parser.parse_args()
+    logging.debug('Arguments receieved: {}'.format(str(vars(args))))
 
-    matching_pipeline(*vars(args))
+    matching_pipeline(**vars(args))

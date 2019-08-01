@@ -30,9 +30,9 @@ def write_keypoints(filepath, keypoints):
     keypoints_arr = torch.zeros((N, 4))
     keypoints_arr[:, :D] = keypoints
 
-    with open(filepath, 'rb') as f:
-        np.array([N, D]).astype(np.int32).tofile(f, format=np.int32)
-        keypoints_arr.numpy().tofile(f, format=np.float32)
+    with open(filepath, 'wb') as f:
+        np.array([N, 4]).astype(np.int32).tofile(f)
+        keypoints_arr.numpy().astype(np.float32).tofile(f)
 
 def read_keypoints(filepath):
     '''
@@ -54,7 +54,7 @@ def read_keypoints(filepath):
     Returns:
         (torch.tensor): float tensor of shape N x 4
     '''
-    with open(filepath, 'wb') as f:
+    with open(filepath, 'rb') as f:
         shape = np.fromfile(f, count=2, dtype=np.uint32)
         flat_keypoints = np.fromfile(f, count=shape[0]*shape[1], dtype=np.float32)
         keypoints = flat_keypoints.reshape(shape[0], shape[1])
@@ -77,8 +77,8 @@ def write_descriptors(filepath, descriptors):
     '''
     N, D = descriptors.shape
     with open(filepath, 'wb') as f:
-        np.array([N, D]).astype(np.int32).tofile(f, format=np.int32)
-        descriptors.cpu().numpy().tofile(f, format=np.float32)
+        np.array([N, D]).astype(np.int32).tofile(f)
+        descriptors.cpu().numpy().astype(np.float32).tofile(f)
 
 def read_descriptors(filepath):
     '''
@@ -113,5 +113,5 @@ def write_matches(filepath, matches):
 
     num_matches = len(matches)
     with open(filepath, 'wb') as f:
-        np.array([num_matches, 2]).astype(np.int32).tofile(f, format=np.int32)
-        matches.cpu().numpy().tofile(f, format=np.uint32)
+        np.array([num_matches, 2]).astype(np.int32).tofile(f)
+        matches.cpu().numpy().astype(np.int32).tofile(f)

@@ -139,6 +139,8 @@ def import_matches(args):
 
     cursor.execute("SELECT sum(rows) FROM two_view_geometries WHERE rows > 0;")
     num_inlier_matches = next(cursor)[0]
+    if(num_inlier_matches is None):
+        num_inlier_matches = 0
 
     cursor.close()
     connection.close()
@@ -290,7 +292,7 @@ def main():
                       "",
                       "",
                       matching_stats["num_inlier_pairs"],
-                      matching_stats["num_inlier_matches"]])) + " |")
+                      str(matching_stats["num_inlier_matches"])])) + " |")
 
 
 if __name__ == "__main__":

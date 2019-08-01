@@ -22,7 +22,9 @@ def pdist(descs1, descs2):
     diffs = descs1.view(N1, 1, C) - descs2.view(1, N2, C)
     return (diffs ** 2).sum(2)
 
-def match_descriptors(descs1, descs2, max_dist_ratio):
+def match_descriptors(descs1: torch.Tensor,
+                      descs2: torch.Tensor,
+                      max_dist_ratio:float):
     '''
 
     Given two matrix of shape N1xC, N2xC, compute pairwise distance
@@ -38,24 +40,26 @@ def match_descriptors(descs1, descs2, max_dist_ratio):
     '''
     N1, C = descs1.shape
     N2, C2 = descs2.shape
+    assert C == C2
+    if ((N1 == 0) or (N2 == 0)):
+        return torch.tensor((0, C))
 
     # Exhaustively compute distances between all descriptors.
     dists = pdist(descs1, descs2)
 
     # Find the first best matches.
     idxs1 = torch.tensor(list(range(N1))).to(descs1.device)
-    fmin_dists12, idxs12 = dists.min(2)
-    fmin_dists21, idxs21 = dists.min(1)
+    fmin_dists12, idxs12 = dists.min(1)
+    fmin_dists21, idxs21 = dists.min(0)
     idxs121 = idxs21[idxs12]
 
-
     # compute second best matches
-    dists[idxs1][idxs12] = float('inf')
-    smin_dists12 = dists.min(2)[0]
+    dists[idxs1, idxs12] = float('inf')
+    smin_dists12 = dists.min(1)[0]
     dist_ratios12 = fmin_dists12 / smin_dists12
 
     mask = (dist_ratios12 <= max_dist_ratio) & (idxs1 == idxs121)
-    valid_idxs1 = idxs1(mask)
-    valid_idxs2 = idxs12(mask)
+    valid_idxs1 = idxs1[mask]
+    valid_idxs2 = idxs12[mask]
 
-    return torch.stack((valid_idxs1, valid_idxs2))
+    return torch.stack((valid_idxs1, valid_idxs2), dim=1)
