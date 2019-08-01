@@ -16,7 +16,7 @@ def write_keypoints(filepath, keypoints):
     In total, this binary file should consist of two signed 4-byte integers
     followed by N x D single-precision floating point values storing the N x
     4 keypoint matrix in row-major format. In this matrix, each row contains
-    the x, y, scale, orientation properties of the keypoint. 
+    the x, y, scale, orientation properties of the keypoint.
 
     For keypoints without orientation and scale, simply set to zeros
 
@@ -72,7 +72,7 @@ def write_descriptors(filepath, descriptors):
 
     Args:
         filepath(string): path of binary file that contains keypoint data
-        descriptors(torch.Tensor): Nx2 tensor representing N descriptors with D
+        descriptors(torch.Tensor): NxD tensor representing N descriptors with D
             channels
     '''
     N, D = descriptors.shape
@@ -101,6 +101,13 @@ def read_descriptors(filepath):
     return torch.from_numpy(descs)
 
 def write_matches(filepath, matches):
+    '''
+    Writes matches to file.
+    Args:
+        filepath: path to write match file to.
+            Match is a binary file that has <N><2><M1><M2>...
+        matches: match matrix of type int
+    '''
     # sanity check
     assert matches.shape[1] == 2
 

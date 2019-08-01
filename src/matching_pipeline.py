@@ -5,14 +5,17 @@
 import os
 from os import path
 from .exhaustive_matching import exhaustive_matching
-from .approximate_matching import approximate_matching 
-from .feature_extraction_powerpoint import feature_extraction_powerpoint
+from .approximate_matching import approximate_matching
+from .extracors.powerpoint import PowerPoint
+from .extracors.superpoint import SuperPoint
+from .extracors.lf_net import LFNet
+from .extracors.d2_net import D2Net
 
 
 # global variables
 DATASET_NAMES = [
-    'Fountain', 'Herzjesu', 'South-Building', 
-    'Madrid_Metropolis', 'Gendarmenmarkt', 'Tower_of_London', 
+    'Fountain', 'Herzjesu', 'South-Building',
+    'Madrid_Metropolis', 'Gendarmenmarkt', 'Tower_of_London',
     'Oxford5k', 'Alamo', 'Roman_Forum', 'ArtsQuad_dataset'
 ]
 
@@ -24,10 +27,10 @@ for dataset_name in DATASET_NAMES:
     # Set the pipeline parameters.
     # TODO: Change this to where your dataset is stored. This directory should
     #       contain an "images" folder and a "database.db" file.
-    dataset_path = path.join('datasets/', dataset_name)
+    dataset_path = path.join('/media/data/local-feature-evaluation-datasets/', dataset_name)
 
     # TODO: Change this to where the COLMAP build directory is located.
-    COLMAP_PATH = 'colmap/build'
+    COLMAP_PATH = '~/colmap/build'
 
     # Radius of local patches around each keypoint.
     patch_radius = 32
@@ -84,7 +87,7 @@ for dataset_name in DATASET_NAMES:
         'database': database_path,
         'dataset': dataset_path,
     }
-    feature_paths= {
+    feature_paths = {
         'names': image_names,
         'images': image_paths,
         'keypoints': keypoint_paths,
